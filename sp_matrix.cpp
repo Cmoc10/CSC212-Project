@@ -78,73 +78,55 @@ void SpMatrix::insert(int data, int row, int col){
                 return;
             }
         }
-        //if after recursive call
-        else{
-            insert(data, row, col, head->next);
-            return;
-        }
+    }
+    //if after recursive call
+    else if(head->next == nullptr){
+        Node* temp = new Node(data, row, col, head->next);
+        head->next = temp;
+        return;
+    }
+    else{
+        insert(data, row, col, head->next);
+        return;
     }
 }
 
 void SpMatrix::insert(int data, int row, int col, Node* node){
-    //check if new node is before node
-    if(row < node->row){
-        Node* temp = new Node(data, row, col, node);
-        node = temp;
+    if(!node){
+        std::cout << data << " uh oh\n";
         return;
     }
-    //check if node is in nodes row
-    else if(row == node->row){
-        //check if new node is before node
-        if(col < node->column){
-            Node* temp = new Node(data, row, col, node);
-            node = temp;
-            return;
-        }
-        //check if new node is replacing hed
-        else if(col == node->column){
-            Node* temp = new Node(data, row, col, node);
-            node = temp;
-            return;
-        }
-        //check if node has a next
-        else if(node->next == nullptr){
-            Node* temp = new Node(data, row, col);
-            node->next = temp;
-            return;
-        }
-        //check if new node is in earlier row
-        else if(row < node->next->row){
+    //checking for a next node
+    if(node->next == nullptr){
+        Node* temp = new Node(data, row, col);
+        node->next = temp;
+        return;
+    }
+    //checking if before next node by row
+    else if(row < node->next->row){
+        Node* temp = new Node(data, row, col, node->next);
+        node->next = temp;
+        return;
+    }
+    //checking if before next node if in same row
+    else if(row == node->next->row){
+        if(col < node->next->column){
             Node* temp = new Node(data, row, col, node->next);
             node->next = temp;
             return;
         }
-        //checks if in the same row as next
-        else if(row == node->next->row){
-            //if before reassign next
-            if(col < node->next->column){
-                Node* temp = new Node(data, row, col, node->next);
-                node->next = temp;
-                return;
-            }
-            //if the same push next back 1 spot
-            else if(col == node->next->column){
-                Node* temp = new Node(data, row, col, node->next);
-                push(node->next);
-                node->next = temp;
-                return;
-            }
-            //if after recursive call
-            else{
-                insert(data, row, col, node->next);
-                return;
-            }
-        }
-        //if after recursive call
-        else{
-            insert(data, row, col, node->next);
+        else if(col == node->next->column){
+            Node* temp = new Node(data, row, col, node->next);
+            push(node->next);
+            node->next = temp;
             return;
         }
+        else{
+            insert(data, row, col, node->next);
+        }
+    }
+    else{
+        insert(data, row, col, node->next);
     }
 }
 //function to push a value back if another value is trying to take the same place
@@ -168,6 +150,24 @@ void SpMatrix::push(Node* node){
         node->column++;
         push(node->next);
         return;
+    }
+}
+
+void SpMatrix::print(){
+    Node* temp = head;
+    for(int i=0; i<rows; i++){
+        for(int j=0; j<columns; j++){
+            if(i == temp->row && j == temp->column){
+                std::cout << temp->data << " ";
+                if(temp->next != nullptr){
+                    temp = temp->next;
+                }
+            }
+            else{
+                std::cout << "0 ";
+            }
+        }
+        std::cout << "\n";
     }
 }
 
