@@ -301,6 +301,106 @@ void SpMatrix::to_csv(std::string fname){
     outf.close();
 }
 
+SpMatrix SpMatrix::multiply(SpMatrix& matrix2){
+    SpMatrix result; 
+    Node* matrix2temp = matrix2.head;
+    if(columns != matrix2.rows){
+        std::cout<<"Can not multiply; unequal columns and rows\n";
+        return result;
+    }
+
+    SpMatrix newMatrix2;
+
+    while(matrix2temp != nullptr){
+        newMatrix2.insert(matrix2temp->data, matrix2temp->column, matrix2temp->row);
+        matrix2temp = matrix2temp->next;
+    }
+
+
+    std::cout << "Rows: " << newMatrix2.rows << "\n" << "Columns: " << newMatrix2.columns << "\n";
+    Node* temps = newMatrix2.head;
+    for(int i=0; i<newMatrix2.rows; i++){
+        for(int j=0; j<newMatrix2.columns; j++){
+            if(i == temps->row && j == temps->column){
+                std::cout << temps->data << " ";
+                if(temps->next != nullptr){
+                    temps = temps->next;
+                }
+            }
+            else{
+                std::cout << "0 ";
+            }
+        }
+        std::cout << "\n";
+    }
+
+
+
+    Node* temp = head;
+    Node* temp2 = newMatrix2.head;
+    Node* temptemp;
+    int matrix1Num;
+    int matrix2Num;
+    int data2 = 0;
+    int counter = 1;
+    for(int matrix2row = 0; matrix2row < newMatrix2.rows; matrix2row++){
+        temp = head;
+        for(int i = 0; i < rows; i++){ //goes through each row of matrix one
+            temp2 = newMatrix2.head;
+            //std::cout<<temp2->data<<std::endl;
+            for(int j = 0; j < columns; j++){ // During each row will then go thorugh each column so it can multiple
+                if(i == temp->row && j == temp->column){
+                    matrix1Num = temp->data;
+                    if(temp->next != nullptr){
+                        temp = temp->next;
+                    }
+                }
+                else{
+                    matrix1Num = 0;
+                }
+                if(matrix2row == temp2->row && j == temp2->column){
+                    matrix2Num = temp2->data;
+                    if(temp2->next != nullptr){
+                        temp2 = temp2->next;
+                    }
+                }
+                else{
+                    matrix2Num = 0;
+                }
+                std::cout<< "data2 = " << data2 << " + "<< matrix1Num<< "*"<<matrix2Num<< " which = "<< matrix1Num*matrix2Num<<std::endl;
+                data2 += (matrix1Num*matrix2Num);
+                std::cout<<"new data 2:"<< data2<<std::endl;
+                
+            }
+            if(counter != matrix2row){
+                temptemp = temp2;
+            }
+            result.insert(data2, i, matrix2row);
+            data2 = 0;
+        }
+        newMatrix2.head = temp2;
+    }
+
+    std::cout << "Result\nRows: " << result.rows << "\n" << "Columns: " << result.columns << "\n";
+    temps = result.head;
+    for(int i=0; i<result.rows; i++){
+        for(int j=0; j<result.columns; j++){
+            if(i == temps->row && j == temps->column){
+                std::cout << temps->data << " ";
+                if(temps->next != nullptr){
+                    temps = temps->next;
+                }
+            }
+            else{
+                std::cout << "0 ";
+            }
+        }
+        std::cout << "\n";
+    }
+
+    return result;
+}
+
 // Default constructor
 Node::Node(){
     this->data = 0;
