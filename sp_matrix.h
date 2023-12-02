@@ -1,6 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <vector>
+#include <algorithm>
 
 class Node{
     private:
@@ -40,4 +42,6 @@ class SpMatrix{
     SpMatrix multiply(SpMatrix& matrix2);
     void to_csv(std::string fname);
     void print();
+    int make_recs();
+    int make_bad_recs();
 };

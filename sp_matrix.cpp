@@ -26,22 +26,19 @@ void SpMatrix::auto_resize(int new_num, bool type){
     //else resize cols
     else{
         this->columns = new_num+1;
-        //std::cout << columns << std::endl;
     }
 }
 
 void SpMatrix::insert(int data, int row, int col){
-    if(row > (this->rows)-1){
+    if(row >= this->rows){
         auto_resize(row, true);
     }
-    if(col > (this->columns-1)){
+    if(col >= this->columns){
         auto_resize(col, false);
     }
     //check if there is a head
-    //std::cout << columns << std::endl;
     if(head == nullptr){
-        Node* temp = new Node(data, row, col);
-        head = temp;
+        head = new Node(data, row, col);
         return;
     }
     //check if new node is before head
@@ -236,7 +233,6 @@ SpMatrix SpMatrix::add(SpMatrix& matrix2){
 }
 
 void SpMatrix::print(){
-    std::cout << "Rows: " << rows << "\n" << "Columns: " << columns << "\n";
     Node* temp = head;
     for(int i=0; i<rows; i++){
         for(int j=0; j<columns; j++){
@@ -266,12 +262,54 @@ void SpMatrix::to_csv(std::string fname){
                 }
             }
             else{
-                outf << "0,";
+                outf << ",";
             }
         }
         outf << "\n";
     }
     outf.close();
+}
+
+int SpMatrix::make_recs(){
+    Node* temp = head;
+    float count;
+    float sum;
+    std::vector<float> ratings;
+    for(int i=0; i<columns; i++){
+        temp = head;
+        count = 0;
+        sum = 0;
+        while(temp != nullptr){
+            if(temp->column == i){
+                count++;
+                sum += temp->data;
+            }
+            temp = temp->next;
+        }
+        ratings.push_back(sum/count);
+    }
+    return(std::max_element(ratings.begin(),ratings.end()) - ratings.begin());
+}
+
+int SpMatrix::make_bad_recs(){
+    Node* temp = head;
+    float count;
+    float sum;
+    std::vector<float> ratings;
+    for(int i=0; i<columns; i++){
+        temp = head;
+        count = 0;
+        sum = 0;
+        while(temp != nullptr){
+            if(temp->column == i){
+                count++;
+                sum += temp->data;
+            }
+            temp = temp->next;
+        }
+        ratings.push_back(sum/count);
+    }
+    return(std::min_element(ratings.begin(),ratings.end()) - ratings.begin());
 }
 
 // Default constructor
