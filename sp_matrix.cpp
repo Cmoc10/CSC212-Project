@@ -26,17 +26,19 @@ void SpMatrix::auto_resize(int new_num, bool type){
     //else resize cols
     else{
         this->columns = new_num+1;
+        //std::cout << columns << std::endl;
     }
 }
 
 void SpMatrix::insert(int data, int row, int col){
-    if(row > this->rows){
+    if(row > (this->rows)-1){
         auto_resize(row, true);
     }
-    if(col > this->columns){
+    if(col > (this->columns-1)){
         auto_resize(col, false);
     }
     //check if there is a head
+    //std::cout << columns << std::endl;
     if(head == nullptr){
         Node* temp = new Node(data, row, col);
         head = temp;
@@ -168,6 +170,69 @@ void SpMatrix::push(Node* node){
         push(node->next);
         return;
     }
+}
+
+SpMatrix SpMatrix::add(SpMatrix& matrix2){
+    SpMatrix result(rows, columns);
+
+    //traverse through matrixes
+    //starting position 
+    Node* temp1 = this->head;
+    Node* temp2 = matrix2.head;
+    //Same position
+    while(temp1 != nullptr && temp2 != nullptr){
+        //Check the row first
+        //Same row
+        if(temp1->row == temp2->row){
+            //check the columns
+            if(temp1->column < temp2->column){
+                result.insert(temp1->data, temp1->row, temp1->column);
+                temp1 = temp1->next;
+                if(temp1 == nullptr){
+                    break;
+                }
+            }
+            else if(temp2->column < temp1->column){
+                result.insert(temp2->data, temp2->row, temp2->column);
+                temp2 = temp2->next;
+                if(temp2 == nullptr){
+                    break;
+                }
+            }
+            //Same column, add them together
+            else if(temp1->column == temp2->column){
+                int sum;
+                sum = temp1->data + temp2->data;
+                result.insert(sum, temp1->row, temp1->column);
+
+                temp1 = temp1->next;
+                temp2 = temp2->next;
+                if(temp1 == nullptr || temp2 == nullptr){
+                    break;
+                }
+            }
+        }
+        //Check for smaller row
+        else if(temp1->row < temp2->row){
+            result.insert(temp1->data, temp1->row, temp1->column);
+            temp1 = temp1->next;
+        }
+        else if(temp2->row < temp1->row){
+            result.insert(temp2->data, temp2->row, temp2->column);
+            temp2 = temp2->next;
+        }
+
+    }
+    while(temp1 != nullptr && temp2 == nullptr){
+        result.insert(temp1->data, temp1->row, temp1->column);
+        temp1 = temp1->next;
+    }
+    while(temp2 != nullptr && temp1 == nullptr){
+        result.insert(temp2->data, temp2->row, temp2->column);
+        temp2 = temp2->next;
+    }
+
+    return result;
 }
 
 void SpMatrix::print(){
