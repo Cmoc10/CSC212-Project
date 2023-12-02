@@ -18,7 +18,24 @@ SpMatrix::SpMatrix(int row, int col, Node* head){
     this->head = head;
 }
 
+void SpMatrix::auto_resize(int new_num, bool type){
+    // if type == True resize rows
+    if(type){
+        this->rows = new_num+1;
+    }
+    //else resize cols
+    else{
+        this->columns = new_num+1;
+    }
+}
+
 void SpMatrix::insert(int data, int row, int col){
+    if(row > this->rows){
+        auto_resize(row, true);
+    }
+    if(col > this->columns){
+        auto_resize(col, false);
+    }
     //check if there is a head
     if(head == nullptr){
         Node* temp = new Node(data, row, col);
@@ -154,6 +171,7 @@ void SpMatrix::push(Node* node){
 }
 
 void SpMatrix::print(){
+    std::cout << "Rows: " << rows << "\n" << "Columns: " << columns << "\n";
     Node* temp = head;
     for(int i=0; i<rows; i++){
         for(int j=0; j<columns; j++){
@@ -169,6 +187,26 @@ void SpMatrix::print(){
         }
         std::cout << "\n";
     }
+}
+
+void SpMatrix::to_csv(std::string fname){
+    std::ofstream outf(fname);
+    Node* temp = head;
+    for(int i=0; i<rows; i++){
+        for(int j=0; j<columns; j++){
+            if(i == temp->row && j == temp->column){
+                outf << temp->data << ",";
+                if(temp->next != nullptr){
+                    temp = temp->next;
+                }
+            }
+            else{
+                outf << "0,";
+            }
+        }
+        outf << "\n";
+    }
+    outf.close();
 }
 
 // Default constructor
