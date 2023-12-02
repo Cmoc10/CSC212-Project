@@ -1,8 +1,6 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <vector>
-#include <algorithm>
 
 class Node{
     private:
@@ -27,7 +25,6 @@ class SpMatrix{
     Node* head;
     void insert(int data, int row, int col, Node* node);
     void push(Node* node);
-    void remove(int data, Node* node);
     //resize function for rows/cols
     void auto_resize(int new_num, bool type);
 
@@ -42,6 +39,4 @@ class SpMatrix{
     SpMatrix multiply(SpMatrix& matrix2);
     void to_csv(std::string fname);
     void print();
-    int make_recs();
-    int make_bad_recs();
 };
