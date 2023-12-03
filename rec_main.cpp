@@ -80,7 +80,7 @@ int main(int argc, char** argv){
         break;
     case 2:
         results = matrix.highest();
-        std::cout << "The highest rated show is: " << titles[results.first] << "\n";
+        std::cout << "The highest rated show is: " << titles[results.first] << " with a rating of " << std::fixed << std::setprecision(2) << results.highestscore << "\n";
         std::cout << "The lowest rated show is: " << titles[matrix.lowest()] << "\n";
         break;
     case 3:
@@ -88,7 +88,7 @@ int main(int argc, char** argv){
         std::cin >> input;
         index = get_index(titles, input);
         recomendations = matrix.make_recs(index);
-        std::cout << "People who liked " << titles [index] << " also liked " << titles[recomendations.first] 
+        std::cout << "People who liked " << titles[index] << " also liked " << titles[recomendations.first] 
         << ", " << titles[recomendations.second] << ", " << titles[recomendations.third]<<std::endl;
         break;
     default:

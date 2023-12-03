@@ -263,14 +263,12 @@ SpMatrix SpMatrix::add(SpMatrix& matrix2){
 }
 
 void SpMatrix::print(){
-    float counter = 0;
     std::cout << "Rows: " << rows << "\n" << "Columns: " << columns << "\n";
     Node* temp = head;
     for(int i=0; i<rows; i++){
         for(int j=0; j<columns; j++){
             if(i == temp->row && j == temp->column){
                 std::cout << temp->data << " ";
-                counter++;
                 if(temp->next != nullptr){
                     temp = temp->next;
                 }
@@ -281,8 +279,6 @@ void SpMatrix::print(){
         }
         std::cout << "\n";
     }
-    float sparsity = 1-(counter/(rows*columns));
-    std::cout << "The sparsity of this matrix is: " << sparsity << "\n";
 }
 
 void SpMatrix::to_csv(std::string fname){
@@ -297,7 +293,7 @@ void SpMatrix::to_csv(std::string fname){
                 }
             }
             else{
-                outf << ",";
+                outf << "0,";
             }
         }
         outf << "\n";
@@ -321,21 +317,21 @@ SpMatrix SpMatrix::multiply(SpMatrix& matrix2){
     }
 
 
-    //std::cout << "Rows: " << newMatrix2.rows << "\n" << "Columns: " << newMatrix2.columns << "\n";
+    std::cout << "Rows: " << newMatrix2.rows << "\n" << "Columns: " << newMatrix2.columns << "\n";
     Node* temps = newMatrix2.head;
     for(int i=0; i<newMatrix2.rows; i++){
         for(int j=0; j<newMatrix2.columns; j++){
             if(i == temps->row && j == temps->column){
-                //std::cout << temps->data << " ";
+                std::cout << temps->data << " ";
                 if(temps->next != nullptr){
                     temps = temps->next;
                 }
             }
             else{
-                //std::cout << "0 ";
+                std::cout << "0 ";
             }
         }
-        //std::cout << "\n";
+        std::cout << "\n";
     }
 
 
@@ -371,9 +367,9 @@ SpMatrix SpMatrix::multiply(SpMatrix& matrix2){
                 else{
                     matrix2Num = 0;
                 }
-                //std::cout<< "data2 = " << data2 << " + "<< matrix1Num<< "*"<<matrix2Num<< " which = "<< matrix1Num*matrix2Num<<std::endl;
+                std::cout<< "data2 = " << data2 << " + "<< matrix1Num<< "*"<<matrix2Num<< " which = "<< matrix1Num*matrix2Num<<std::endl;
                 data2 += (matrix1Num*matrix2Num);
-                //std::cout<<"new data 2:"<< data2<<std::endl;
+                std::cout<<"new data 2:"<< data2<<std::endl;
                 
             }
             if(counter != matrix2row){
@@ -417,14 +413,14 @@ topThree SpMatrix::highest(){
     double average;
     std::vector<double> averages;
     temp = tempMatrix.head;
-    int counter;
+    int counter = 0;
     for(int i = 0; i < tempMatrix.rows; i++){
         average = 0;
         counter = 0;
         for(int j = 0; j < tempMatrix.columns; j++){
             if(i == temp->row && j == temp->column){
                 average += temp->data;
-                counter ++;
+                counter++;
                 if(temp->next != nullptr){
                     temp = temp->next;
                 }
@@ -436,6 +432,7 @@ topThree SpMatrix::highest(){
     auto highestAverage = std::max_element(averages.begin(), averages.end());
     int index = std::distance(averages.begin(), highestAverage);
     result.first = index;
+    result.highestscore = averages[index];
     //std::cout<<index<<std::endl;
     averages[index] = 0;
 
@@ -464,7 +461,7 @@ topThree SpMatrix::highest(int col){
     double average;
     std::vector<double> averages;
     temp = tempMatrix.head;
-    int counter;
+    int counter = 0;
     for(int i = 0; i < tempMatrix.rows; i++){
         average = 0;
         counter = 0;
@@ -516,8 +513,8 @@ int SpMatrix::lowest(){
 
     double average;
     std::vector<double> averages;
-    int counter;
     temp = tempMatrix.head;
+    int counter = 0;
     for(int i = 0; i < tempMatrix.rows; i++){
         average = 0;
         counter = 0;
