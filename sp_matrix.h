@@ -1,6 +1,14 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <vector>
+#include <algorithm>
+
+struct topThree {
+    int first;
+    int second;
+    int third;
+};
 
 class Node{
     private:
@@ -25,6 +33,7 @@ class SpMatrix{
     Node* head;
     void insert(int data, int row, int col, Node* node);
     void push(Node* node);
+    void remove(int data, Node* node);
     //resize function for rows/cols
     void auto_resize(int new_num, bool type);
 
@@ -37,6 +46,10 @@ class SpMatrix{
     SpMatrix add(SpMatrix& matrix2);
     //passing by reference for speed
     SpMatrix multiply(SpMatrix& matrix2);
+    topThree highest();
+    topThree highest(int col);
+    int lowest();
+    topThree make_recs(int col);
     void to_csv(std::string fname);
     void print();
 };

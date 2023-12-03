@@ -3,6 +3,7 @@
 #include <sstream>
 #include <fstream>
 
+
 int main(int argc, char** argv){
     std::string ifname = argv[2];
     int mode = std::stoi(argv[1]);
@@ -75,7 +76,8 @@ int main(int argc, char** argv){
         }
     ifs2.close();
     }
-    
+    topThree results;
+    topThree recomendations;
     switch (mode){
     case 1:
         for(std::string title: titles){
@@ -85,8 +87,12 @@ int main(int argc, char** argv){
         matrix.print();
         break;
     case 2:
-        std::cout << "The highest rated show is: " << titles[matrix.make_recs()] << "\n";
-        std::cout << "The lowest rated show is: " << titles[matrix.make_bad_recs()] << "\n";
+        results = matrix.highest();
+        std::cout << "The highest rated show is: " << titles[results.first] << "\n";
+        std::cout << "The lowest rated show is: " << titles[matrix.lowest()] << "\n";
+        recomendations = matrix.make_recs(1);
+        std::cout << "Based on you liking the show " << titles[1] << " other people who liked " << titles [1] << " also liked "
+            << titles[recomendations.first] << ", " << titles[recomendations.second] << ", " << titles[recomendations.third]<<std::endl;
         break;
     case 3:
 

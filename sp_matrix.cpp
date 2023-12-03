@@ -401,6 +401,190 @@ SpMatrix SpMatrix::multiply(SpMatrix& matrix2){
     return result;
 }
 
+topThree SpMatrix::highest(){
+    topThree result;
+    SpMatrix tempMatrix;
+    Node* temp = head;
+    while(temp != nullptr){ //flipping
+        tempMatrix.insert(temp->data, temp->column, temp->row);
+        temp = temp->next;
+    }
+
+    double average;
+    std::vector<double> averages;
+    temp = tempMatrix.head;
+    for(int i = 0; i < tempMatrix.rows; i++){
+        average = 0;
+        for(int j = 0; j < tempMatrix.columns; j++){
+            if(i == temp->row && j == temp->column){
+                average += temp->data;
+                if(temp->next != nullptr){
+                    temp = temp->next;
+                }
+            }
+        }
+        average =  average / tempMatrix.columns;
+        averages.push_back(average);
+    }
+    auto highestAverage = std::max_element(averages.begin(), averages.end());
+    int index = std::distance(averages.begin(), highestAverage);
+    result.first = index;
+    //std::cout<<index<<std::endl;
+    averages[index] = 0;
+
+    highestAverage = std::max_element(averages.begin(), averages.end());
+    index = std::distance(averages.begin(), highestAverage);
+    result.second = index;
+    averages[index] = 0;
+
+    highestAverage = std::max_element(averages.begin(), averages.end());
+    index = std::distance(averages.begin(), highestAverage);
+    result.third = index;
+    averages[index] = 0;
+
+    return result;
+}
+
+topThree SpMatrix::highest(int col){
+    topThree result;
+    SpMatrix tempMatrix;
+    Node* temp = head;
+    while(temp != nullptr){ //flipping
+        tempMatrix.insert(temp->data, temp->column, temp->row);
+        temp = temp->next;
+    }
+
+    double average;
+    std::vector<double> averages;
+    temp = tempMatrix.head;
+    for(int i = 0; i < tempMatrix.rows; i++){
+        average = 0;
+        for(int j = 0; j < tempMatrix.columns; j++){
+            if(i == temp->row && j == temp->column){
+                average += temp->data;
+                if(temp->next != nullptr){
+                    temp = temp->next;
+                }
+            }
+        }
+        average =  average / tempMatrix.columns;
+        averages.push_back(average);
+    }
+    for(int i = 0; i<averages.size(); i++){
+        //std::cout<<averages[i]<<", ";
+    }
+    //std::cout<<std::endl;
+    averages[col] = 0;
+    auto highestAverage = std::max_element(averages.begin(), averages.end());
+    int index = std::distance(averages.begin(), highestAverage);
+    result.first = index;
+    //std::cout<<index<<std::endl;
+    averages[index] = 0;
+
+    highestAverage = std::max_element(averages.begin(), averages.end());
+    index = std::distance(averages.begin(), highestAverage);
+    result.second = index;
+    //std::cout<<index<<std::endl;
+    averages[index] = 0;
+
+    highestAverage = std::max_element(averages.begin(), averages.end());
+    index = std::distance(averages.begin(), highestAverage);
+    result.third = index;
+    //std::cout<<index<<std::endl;
+    averages[index] = 0;
+
+    return result;
+}
+
+int SpMatrix::lowest(){
+    SpMatrix tempMatrix;
+    Node* temp = head;
+    while(temp != nullptr){ //flipping
+        tempMatrix.insert(temp->data, temp->column, temp->row);
+        temp = temp->next;
+    }
+
+    double average;
+    std::vector<double> averages;
+    temp = tempMatrix.head;
+    for(int i = 0; i < tempMatrix.rows; i++){
+        average = 0;
+        for(int j = 0; j < tempMatrix.columns; j++){
+            if(i == temp->row && j == temp->column){
+                average += temp->data;
+                if(temp->next != nullptr){
+                    temp = temp->next;
+                }
+            }
+        }
+        average =  average / tempMatrix.columns;
+        averages.push_back(average);
+    }
+    
+    auto highestAverage = std::min_element(averages.begin(), averages.end());
+    int index = std::distance(averages.begin(), highestAverage);
+    return index;
+}
+
+
+topThree SpMatrix::make_recs(int col){
+    topThree result;
+    SpMatrix tempMatrix;
+    Node* temp = head;
+    while(temp != nullptr){ //flipping
+        tempMatrix.insert(temp->data, temp->column, temp->row);
+        temp = temp->next;
+    }
+    SpMatrix goodRating;
+    temp = tempMatrix.head;
+    //tempMatrix.print();
+    for(int k = 0; k<tempMatrix.rows; k++){
+        for(int j = 0; j < tempMatrix.columns; j++){
+            if(k == temp->row && j == temp->column){
+                //std::cout<<"helpppppppppp   ";
+                if(temp->data >= 3 && k==col){
+                    
+                    Node* temps = tempMatrix.head;
+                    for(int i = 0; i<tempMatrix.rows; i++){
+                        for(int l = 0; l < tempMatrix.columns; l++){
+                            if(i == temps->row && l == temps->column){ //Inserting the whole column where >= 3
+                                if(j == l){
+                                    goodRating.insert(temps->data, i, j);
+                                }
+                                if(temps->next != nullptr){
+                                    temps = temps->next;
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+                if(temp->next != nullptr){
+                    temp = temp->next;
+                }
+                
+            }
+            
+        }
+    }
+
+    //goodRating.print();
+
+    temp = goodRating.head;
+
+    SpMatrix newGoodRating;
+    while(temp != nullptr){ //flipping
+        newGoodRating.insert(temp->data, temp->column, temp->row);
+        temp = temp->next;
+    }
+
+    //newGoodRating.print();
+    result = newGoodRating.highest(col);
+    return result;
+
+}
+
 // Default constructor
 Node::Node(){
     this->data = 0;
