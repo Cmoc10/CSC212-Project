@@ -413,17 +413,20 @@ topThree SpMatrix::highest(){
     double average;
     std::vector<double> averages;
     temp = tempMatrix.head;
+    int counter;
     for(int i = 0; i < tempMatrix.rows; i++){
         average = 0;
+        counter = 0;
         for(int j = 0; j < tempMatrix.columns; j++){
             if(i == temp->row && j == temp->column){
                 average += temp->data;
+                counter ++;
                 if(temp->next != nullptr){
                     temp = temp->next;
                 }
             }
         }
-        average =  average / tempMatrix.columns;
+        average =  average / counter;
         averages.push_back(average);
     }
     auto highestAverage = std::max_element(averages.begin(), averages.end());
@@ -457,17 +460,20 @@ topThree SpMatrix::highest(int col){
     double average;
     std::vector<double> averages;
     temp = tempMatrix.head;
+    int counter;
     for(int i = 0; i < tempMatrix.rows; i++){
         average = 0;
+        counter = 0;
         for(int j = 0; j < tempMatrix.columns; j++){
             if(i == temp->row && j == temp->column){
                 average += temp->data;
+                counter++;
                 if(temp->next != nullptr){
                     temp = temp->next;
                 }
             }
         }
-        average =  average / tempMatrix.columns;
+        average =  average / counter;
         averages.push_back(average);
     }
     for(int i = 0; i<averages.size(); i++){
@@ -506,18 +512,21 @@ int SpMatrix::lowest(){
 
     double average;
     std::vector<double> averages;
+    int counter;
     temp = tempMatrix.head;
     for(int i = 0; i < tempMatrix.rows; i++){
         average = 0;
+        counter = 0;
         for(int j = 0; j < tempMatrix.columns; j++){
             if(i == temp->row && j == temp->column){
                 average += temp->data;
+                counter++;
                 if(temp->next != nullptr){
                     temp = temp->next;
                 }
             }
         }
-        average =  average / tempMatrix.columns;
+        average =  average / counter;
         averages.push_back(average);
     }
     
