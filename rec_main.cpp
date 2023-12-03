@@ -3,6 +3,23 @@
 #include <sstream>
 #include <fstream>
 
+std::string to_lower(std::string str){
+    std::string newstr;
+    for(char let: str){
+        newstr.push_back(std::tolower(let));
+    }
+    return newstr;
+}
+
+int get_index(std::vector<std::string> labels, std::string to_find){
+    for(int i=0; i<labels.size(); i++){
+        if(to_lower(labels[i]) == to_lower(to_find)){
+            return i;
+        }
+    }
+    return -1;
+}
+
 
 int main(int argc, char** argv){
     std::string ifname = argv[2];
@@ -49,35 +66,10 @@ int main(int argc, char** argv){
         }
     }
     ifs.close();
-    if(argc > 2){
-            std::string fname2 = argv[3];
-    first = true;
-    std::ifstream ifs2(fname2);
-    while(std::getline(ifs2, line)){
-        std::stringstream ss(line);
-        while(std::getline(ss, entry, ' ')){
-            std::stringstream ss2(entry);
-            if(!first){
-                ss2 >> data;
-                matrix.insert(data, row, col);
-                col++;
-                }
-                else{
-                    
-                }
-            }
-            if(first){
-                first = false;
-            }
-            else{
-                row++;
-                col = 0;
-            }
-        }
-    ifs2.close();
-    }
     topThree results;
     topThree recomendations;
+    std::string input;
+    int index;
     switch (mode){
     case 1:
         for(std::string title: titles){
@@ -90,12 +82,15 @@ int main(int argc, char** argv){
         results = matrix.highest();
         std::cout << "The highest rated show is: " << titles[results.first] << "\n";
         std::cout << "The lowest rated show is: " << titles[matrix.lowest()] << "\n";
-        recomendations = matrix.make_recs(1);
-        std::cout << "Based on you liking the show " << titles[1] << " other people who liked " << titles [1] << " also liked "
-            << titles[recomendations.first] << ", " << titles[recomendations.second] << ", " << titles[recomendations.third]<<std::endl;
         break;
     case 3:
-
+        std::cout << "Which Show would you like to get reccomendations based off of?\n";
+        std::cin >> input;
+        index = get_index(titles, input);
+        recomendations = matrix.make_recs(index);
+        std::cout << "People who liked " << titles [index] << " also liked " << titles[recomendations.first] 
+        << ", " << titles[recomendations.second] << ", " << titles[recomendations.third]<<std::endl;
+        break;
     default:
         break;
     }
