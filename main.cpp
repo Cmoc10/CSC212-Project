@@ -5,13 +5,17 @@
 
 int main(int argc, char** argv){
     std::string ifname = argv[1];
-    int mode = std::stoi(argv[2]);
-    std::string file2 = argv[3];
+    std::string fname_2 = argv[2];
+    std::string mult_fname = argv[3];
+    std::string mult_fname_2 = argv[4];
 
     SpMatrix matrix;
-    SpMatrix matrix2;
+    SpMatrix matrix_2;
+    SpMatrix matrix_3;
+    SpMatrix matrix_4;
 
     std::ifstream ifs(ifname);
+    std::ifstream ifs_2(fname_2);
     std::string ofname = ifname.substr(0, ifname.rfind('.')) + "_matrix.csv";
 
     std::string line;
@@ -27,27 +31,43 @@ int main(int argc, char** argv){
         matrix.insert(data, row, col);
     }
 
-    //Get the second matrix for addition/multiplication
-    std::ifstream ifs2(file2);
-    std::string line2;
-    while(std::getline(ifs2, line2)){
-        std::stringstream ss2(line2);
-        ss2 >> data >> row >> col;
-        matrix2.insert(data, row, col);
+    while(std::getline(ifs_2, line)){
+        std::stringstream ss(line);
+        ss >> data >> row >> col;
+        matrix_2.insert(data, row, col);
     }
 
-    switch (mode){
-    case 1:
-        matrix.print();
-        break;
-    case 2:
-        matrix.to_csv(ofname);
-        break;
-    case 3:
-        matrix = matrix.add(matrix2);
-        matrix.print();
-    default:
-        break;
+    matrix.print();
+    std::cout << std::endl;
+    matrix_2.print();
+    matrix.to_csv(ofname);
+    std::cout << "\n";
+    std::cin >> line;
+    matrix = matrix.add(matrix_2);
+    matrix.print();
+    std::cin >> line;
+
+    std::ifstream multifs(mult_fname);
+    std::ifstream multifs_2(mult_fname_2);
+
+    while(std::getline(multifs, line)){
+        std::stringstream ss(line);
+        ss >> data >> row >> col;
+        matrix_3.insert(data, row, col);
     }
+
+    while(std::getline(multifs_2, line)){
+        std::stringstream ss(line);
+        ss >> data >> row >> col;
+        matrix_4.insert(data, row, col);
+    }
+
+    matrix_3.print();
+    std::cout << "\n";
+    matrix_4.print();
+    std::cout << "\n";
+    std::cin >> line;
+    matrix_3.multiply(matrix_4);
+
     return 0;
 }
