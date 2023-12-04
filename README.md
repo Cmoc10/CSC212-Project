@@ -7,9 +7,9 @@
 ## Rec_main.cpp Compilation Instructions
 - 1. Compile rec_main.cpp, sp_matrix.cpp (e.g g++ main.cpp sp_matrix.cpp)
   2. Run the file with mode and file name in command line arguments (e.g ./sp_matrix 1 test.txt)
-  3. Modes are
+  3. Modes are:
      - 1-Print out the data
      - 2-Find the Highest and Lowest Rated Shows
-     - 3-Get reccomendations based of a liked Show
+     - 3-Get recommendations based off a liked Show
      - 4-Output a Sparse Matrix to a csv
      - 5-Output a Dense Matrix to a csv
