@@ -293,8 +293,19 @@ void SpMatrix::to_csv(std::string fname){
                 }
             }
             else{
-                outf << "0,";
+                outf << ",";
             }
+        }
+        outf << "\n";
+    }
+    outf.close();
+}
+
+void SpMatrix::to_csv_matrix(std::string fname, std::vector<std::vector<int>> matrix){
+    std::ofstream outf(fname);
+    for(int i=0; i<matrix.size(); i++){
+        for(int j=0; j<matrix[i].size(); j++){
+            outf << matrix[i][j] << ",";
         }
         outf << "\n";
     }

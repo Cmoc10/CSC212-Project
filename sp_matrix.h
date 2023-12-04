@@ -8,6 +8,7 @@ struct topThree {
     int first;
     int second;
     int third;
+    float highestscore;
 };
 
 class Node{
@@ -51,5 +52,6 @@ class SpMatrix{
     int lowest();
     topThree make_recs(int col);
     void to_csv(std::string fname);
+    void to_csv_matrix(std::string fname, std::vector<std::vector<int>> matrix);
     void print();
 };

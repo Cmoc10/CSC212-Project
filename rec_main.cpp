@@ -2,6 +2,10 @@
 #include <vector>
 #include <sstream>
 #include <fstream>
+#include <chrono>
+
+
+
 
 //Make recomendation fucntion work for regular matracies.
 
@@ -22,74 +26,9 @@ int get_index(std::vector<std::string> labels, std::string to_find){
     return -1;
 }
 
-
-int main(int argc, char** argv){
-    std::string ifname = argv[2];
-    int mode = std::stoi(argv[1]);
-
-    SpMatrix matrix;
-    SpMatrix matrix2;
-
-    std::ifstream ifs(ifname);
-    std::string ofname = ifname.substr(0, ifname.rfind('.')) + "_matrix.csv";
-
-    std::string line;
-    std::string entry;
-    std::vector<std::string> titles;
-    std::string str_temp;
-
-    int data;
-    int row = 0;
-    int col = 0;
-    bool first = true;
-
-    while(std::getline(ifs, line)){
-        std::stringstream ss(line);
-        while(std::getline(ss, entry, ' ')){
-            std::stringstream ss2(entry);
-            if(!first){
-                ss2 >> data;
-                if(data != 0){
-                    matrix.insert(data, row, col);
-                }
-                col++;
-            }
-            else{
-                ss2 >> str_temp;
-                titles.push_back(str_temp);
-            }
-        }
-        if(first){
-            first = false;
-        }
-        else{
-            row++;
-            col = 0;
-        }
-    }
-    ifs.close();
-    topThree results;
-    topThree recomendations;
-    std::string input;
-    int index;
+int get_show(std::string input, std::vector<std::string> titles){
     int mistakeCounter = 0;
-    switch (mode){
-    case 1:
-        for(std::string title: titles){
-            std::cout << title << " ";
-        }
-        std::cout << "\n";
-        matrix.print();
-        break;
-    case 2:
-        results = matrix.highest();
-        std::cout << "The highest rated show is: " << titles[results.first] << " with a rating of " << std::fixed << std::setprecision(2) << results.highestscore << "\n";
-        std::cout << "The lowest rated show is: " << titles[matrix.lowest()] << "\n";
-        break;
-    case 3:
-        std::cout << "Which Show would you like to get reccomendations based off of?\n";
-        std::cin >> input;
-        index = get_index(titles, input);
+    int index = get_index(titles, input);
         while(index == -1){
             mistakeCounter++;
             if(mistakeCounter == 3){
@@ -109,12 +48,123 @@ int main(int argc, char** argv){
             index = get_index(titles,input); 
 
         }
+        return index;
+}
+
+
+int main(int argc, char** argv){
+    std::string ifname = argv[2];
+    int mode = std::stoi(argv[1]);
+
+    SpMatrix matrix;
+    std::vector<std::vector<int>> matrix_2;
+    std::vector<int> temp_vec = {};
+
+    std::ifstream ifs(ifname);
+    std::string ofname = ifname.substr(0, ifname.rfind('.')) + "_matrix.csv";
+
+    std::string line;
+    std::string entry;
+    std::vector<std::string> titles;
+    std::string str_temp;
+
+    int data;
+    int row = 0;
+    int col = 0;
+    bool first = true;
+    if(mode != 5){
+        while(std::getline(ifs, line)){
+            std::stringstream ss(line);
+            while(std::getline(ss, entry, ' ')){
+                std::stringstream ss2(entry);
+                if(!first){
+                    ss2 >> data;
+                    if(data != 0){
+                        matrix.insert(data, row, col);
+                    }
+                    col++;
+                }
+                else{
+                    ss2 >> str_temp;
+                    titles.push_back(str_temp);
+                }
+            }
+            if(first){
+                first = false;
+            }
+            else{
+                row++;
+                col = 0;
+            }
+        }
+    }
+    else{
+        while(std::getline(ifs, line)){
+            std::stringstream ss(line);
+            if(!first){
+                matrix_2.push_back(temp_vec);
+            }
+            while(std::getline(ss, entry, ' ')){
+                std::stringstream ss2(entry);
+                if(!first){
+                    ss2 >> data;
+                    matrix_2[row].push_back(data);
+                    col++;
+                }
+                else{
+                    ss2 >> str_temp;
+                    titles.push_back(str_temp);
+                }
+            }
+            if(first){
+                first = false;
+            }
+            else{
+                row++;
+                col = 0;
+            }
+        }
+    }
+    ifs.close();
+    topThree results;
+    topThree recomendations;
+    std::string input;
+    int index;
+    std::string outfname_matrix = "output_dense.csv";
+    std::string outfname = "output_sparse.csv";
+    auto start = std::chrono::high_resolution_clock::now();
+    switch (mode){
+    case 1:
+        for(std::string title: titles){
+            std::cout << title << " ";
+        }
+        std::cout << "\n";
+        matrix.print();
+        break;
+    case 2:
+        results = matrix.highest();
+        std::cout << "The highest rated show is: " << titles[results.first] << " with a rating of " << std::fixed << std::setprecision(2) << results.highestscore << "\n";
+        std::cout << "The lowest rated show is: " << titles[matrix.lowest()] << "\n";
+        break;
+    case 3:
+        std::cout << "Which Show would you like to get reccomendations based off of?\n";
+        std::cin >> input;
+        index = get_show(input, titles);
         recomendations = matrix.make_recs(index);
         std::cout << "People who liked " << titles[index] << " also liked " << titles[recomendations.first] 
         << ", " << titles[recomendations.second] << ", " << titles[recomendations.third]<<std::endl;
         break;
+    case 4:
+        matrix.to_csv(outfname);
+        break;
+    case 5:
+        matrix.to_csv_matrix(outfname_matrix, matrix_2);
+        break;
     default:
         break;
     }
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+    std::cout << "milliseconds to complete: " << duration.count() << std::endl;
     return 0;
 }
