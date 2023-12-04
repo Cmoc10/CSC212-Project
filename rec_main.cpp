@@ -3,6 +3,8 @@
 #include <sstream>
 #include <fstream>
 
+//Make recomendation fucntion work for regular matracies.
+
 std::string to_lower(std::string str){
     std::string newstr;
     for(char let: str){
@@ -70,6 +72,7 @@ int main(int argc, char** argv){
     topThree recomendations;
     std::string input;
     int index;
+    int mistakeCounter = 0;
     switch (mode){
     case 1:
         for(std::string title: titles){
@@ -87,6 +90,25 @@ int main(int argc, char** argv){
         std::cout << "Which Show would you like to get reccomendations based off of?\n";
         std::cin >> input;
         index = get_index(titles, input);
+        while(index == -1){
+            mistakeCounter++;
+            if(mistakeCounter == 3){
+                std::cout<<"Please choose from this list: ";
+                for(int i = 0; i<titles.size(); i++){
+                    if(i == titles.size()-1){
+                        std::cout<<titles[i];
+                    } else {
+                    std::cout<<titles[i]<<", ";
+                    }
+                }
+                std::cout<<std::endl;
+            } else{
+                std::cout<<"Not a valid show or movie. Please type a different show."<<std::endl;
+            }
+            std::cin >> input;
+            index = get_index(titles,input); 
+
+        }
         recomendations = matrix.make_recs(index);
         std::cout << "People who liked " << titles[index] << " also liked " << titles[recomendations.first] 
         << ", " << titles[recomendations.second] << ", " << titles[recomendations.third]<<std::endl;
