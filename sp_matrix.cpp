@@ -18,6 +18,7 @@ SpMatrix::SpMatrix(int row, int col, Node* head){
     this->head = head;
 }
 
+//resize the columns and rows when needed
 void SpMatrix::auto_resize(int new_num, bool type){
     // if type == True resize rows
     if(type){
@@ -30,6 +31,7 @@ void SpMatrix::auto_resize(int new_num, bool type){
     }
 }
 
+//inserts data points into the sparse matirx based of its data, row, and column
 void SpMatrix::insert(int data, int row, int col){
     if(row > (this->rows)-1){
         auto_resize(row, true);
@@ -110,6 +112,7 @@ void SpMatrix::insert(int data, int row, int col){
     }
 }
 
+//recursive call
 void SpMatrix::insert(int data, int row, int col, Node* node){
     if(!node){
         std::cout << data << " uh oh\n";
@@ -149,6 +152,7 @@ void SpMatrix::insert(int data, int row, int col, Node* node){
     }
 }
 
+//removes a data point from the sparce matrix
 void SpMatrix::remove(int data){
     Node* temp = this->head;
     Node* prev = nullptr;
@@ -199,6 +203,7 @@ void SpMatrix::push(Node* node){
     }
 }
 
+//Adds two sparce matracies together
 SpMatrix SpMatrix::add(SpMatrix& matrix2){
     SpMatrix result(rows, columns);
 
@@ -262,6 +267,7 @@ SpMatrix SpMatrix::add(SpMatrix& matrix2){
     return result;
 }
 
+//prints out the sparse matrix
 void SpMatrix::print(){
     std::cout << "Rows: " << rows << "\n" << "Columns: " << columns << "\n";
     Node* temp = head;
@@ -280,6 +286,7 @@ void SpMatrix::print(){
         std::cout << "\n";
     }
 }
+
 
 void SpMatrix::to_csv(std::string fname){
     std::ofstream outf(fname);
@@ -312,6 +319,7 @@ void SpMatrix::to_csv_matrix(std::string fname, std::vector<std::vector<int>> ma
     outf.close();
 }
 
+//multiplies two sparse matracies
 SpMatrix SpMatrix::multiply(SpMatrix& matrix2){
     SpMatrix result; 
     Node* matrix2temp = matrix2.head;
@@ -326,26 +334,7 @@ SpMatrix SpMatrix::multiply(SpMatrix& matrix2){
         newMatrix2.insert(matrix2temp->data, matrix2temp->column, matrix2temp->row);
         matrix2temp = matrix2temp->next;
     }
-
-
-    std::cout << "Rows: " << newMatrix2.rows << "\n" << "Columns: " << newMatrix2.columns << "\n";
-    Node* temps = newMatrix2.head;
-    for(int i=0; i<newMatrix2.rows; i++){
-        for(int j=0; j<newMatrix2.columns; j++){
-            if(i == temps->row && j == temps->column){
-                std::cout << temps->data << " ";
-                if(temps->next != nullptr){
-                    temps = temps->next;
-                }
-            }
-            else{
-                std::cout << "0 ";
-            }
-        }
-        std::cout << "\n";
-    }
-
-
+    newMatrix2.print();
 
     Node* temp = head;
     Node* temp2 = newMatrix2.head;
@@ -378,9 +367,7 @@ SpMatrix SpMatrix::multiply(SpMatrix& matrix2){
                 else{
                     matrix2Num = 0;
                 }
-                std::cout<< "data2 = " << data2 << " + "<< matrix1Num<< "*"<<matrix2Num<< " which = "<< matrix1Num*matrix2Num<<std::endl;
                 data2 += (matrix1Num*matrix2Num);
-                std::cout<<"new data 2:"<< data2<<std::endl;
                 
             }
             if(counter != matrix2row){
@@ -392,26 +379,11 @@ SpMatrix SpMatrix::multiply(SpMatrix& matrix2){
         newMatrix2.head = temp2;
     }
 
-    std::cout << "Result\nRows: " << result.rows << "\n" << "Columns: " << result.columns << "\n";
-    temps = result.head;
-    for(int i=0; i<result.rows; i++){
-        for(int j=0; j<result.columns; j++){
-            if(i == temps->row && j == temps->column){
-                std::cout << temps->data << " ";
-                if(temps->next != nullptr){
-                    temps = temps->next;
-                }
-            }
-            else{
-                std::cout << "0 ";
-            }
-        }
-        std::cout << "\n";
-    }
-
+    result.print();
     return result;
 }
 
+//Outputs the top three highest Averges
 topThree SpMatrix::highest(){
     topThree result;
     SpMatrix tempMatrix;
@@ -460,6 +432,7 @@ topThree SpMatrix::highest(){
     return result;
 }
 
+//Outputs the top three averages with respect to a specifc column
 topThree SpMatrix::highest(int col){
     topThree result;
     SpMatrix tempMatrix;
@@ -514,6 +487,7 @@ topThree SpMatrix::highest(int col){
     return result;
 }
 
+//outputs the lowest average
 topThree SpMatrix::lowest(){
     topThree result;
     SpMatrix tempMatrix;
@@ -550,7 +524,7 @@ topThree SpMatrix::lowest(){
     return result;
 }
 
-
+//Make recomendations for a show based off input from the user
 topThree SpMatrix::make_recs(int col){
     topThree result;
     SpMatrix tempMatrix;

@@ -45,14 +45,21 @@ class SpMatrix{
     SpMatrix(int row, int col, Node* head);
     void insert(int data, int row, int col);
     void remove(int data);
+    //Adds two sparse matracies together
     SpMatrix add(SpMatrix& matrix2);
     //passing by reference for speed
+    //multiplies two sparse matracies
     SpMatrix multiply(SpMatrix& matrix2);
+    //Outputs the top three highest Averges
     topThree highest();
+    //Outputs the top three averages with respect to a specifc column
     topThree highest(int col);
+    //outputs the lowest average
     topThree lowest();
+    //Make recomendations for a show based off input from the user
     topThree make_recs(int col);
     void to_csv(std::string fname);
     void to_csv_matrix(std::string fname, std::vector<std::vector<int>> matrix);
+    //prints out the sparse matrix
     void print();
 };
