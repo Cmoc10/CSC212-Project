@@ -514,7 +514,8 @@ topThree SpMatrix::highest(int col){
     return result;
 }
 
-int SpMatrix::lowest(){
+topThree SpMatrix::lowest(){
+    topThree result;
     SpMatrix tempMatrix;
     Node* temp = head;
     while(temp != nullptr){ //flipping
@@ -544,7 +545,9 @@ int SpMatrix::lowest(){
     
     auto highestAverage = std::min_element(averages.begin(), averages.end());
     int index = std::distance(averages.begin(), highestAverage);
-    return index;
+    result.first = index;
+    result.lowestscore = averages[index];
+    return result;
 }
 
 

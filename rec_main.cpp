@@ -126,7 +126,12 @@ int main(int argc, char** argv){
         }
     }
     ifs.close();
+    std::string type = "dense";
+    if(mode == 4){
+        type = "sparse";
+    }
     topThree results;
+    topThree results2;
     topThree recomendations;
     std::string input;
     int index;
@@ -143,11 +148,12 @@ int main(int argc, char** argv){
         break;
     case 2:
         results = matrix.highest();
+        results2 = matrix.lowest();
         std::cout << "The highest rated show is: " << titles[results.first] << " with a rating of " << std::fixed << std::setprecision(2) << results.highestscore << "\n";
-        std::cout << "The lowest rated show is: " << titles[matrix.lowest()] << "\n";
+        std::cout << "The lowest rated show is: " << titles[results2.first] << " with a rating of " << std::fixed << std::setprecision(2) << results2.lowestscore << "\n";
         break;
     case 3:
-        std::cout << "Which Show would you like to get reccomendations based off of?\n";
+        std::cout << "Which Show would you like to get reccomendations based off of?\n\t-And please use an underscore (_) as a space.";
         std::cin >> input;
         index = get_show(input, titles);
         recomendations = matrix.make_recs(index);
@@ -165,6 +171,8 @@ int main(int argc, char** argv){
     }
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
-    std::cout << "milliseconds to complete: " << duration.count() << std::endl;
+    if(mode > 3){
+        std::cout << "milliseconds to complete type " << type << ": " << duration.count() << std::endl;
+    }
     return 0;
 }
