@@ -13,6 +13,7 @@ int main(int argc, char** argv){
     SpMatrix matrix_2;
     SpMatrix matrix_3;
     SpMatrix matrix_4;
+    SpMatrix mult_matrix;
 
     std::ifstream ifs(ifname);
     std::ifstream ifs_2(fname_2);
@@ -45,6 +46,7 @@ int main(int argc, char** argv){
     std::cin >> line;
     matrix = matrix.add(matrix_2);
     matrix.print();
+    std::cout << "\n";
     std::cin >> line;
 
     std::ifstream multifs(mult_fname);
@@ -67,7 +69,9 @@ int main(int argc, char** argv){
     matrix_4.print();
     std::cout << "\n";
     std::cin >> line;
-    matrix_3.multiply(matrix_4);
-
+    mult_matrix = matrix_3.multiply(matrix_4);
+    std::cin >> line;
+    mult_matrix.remove(5);
+    mult_matrix.print();
     return 0;
 }
