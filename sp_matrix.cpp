@@ -276,7 +276,9 @@ void SpMatrix::print(){
         for(int j=0; j<columns; j++){
             if(i == temp->row && j == temp->column){
                 std::cout << temp->data << " ";
-                counter_print++;
+                if(temp->data != 0){
+                    counter_print++;
+                }
                 if(temp->next != nullptr){
                     temp = temp->next;
                 }

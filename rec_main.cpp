@@ -153,7 +153,7 @@ int main(int argc, char** argv){
         std::cout << "The lowest rated show is: " << titles[results2.first] << " with a rating of " << std::fixed << std::setprecision(2) << results2.lowestscore << "\n";
         break;
     case 3:
-        std::cout << "Which Show would you like to get reccomendations based off of?\n\t-And please use an underscore (_) as a space.";
+        std::cout << "Which Show would you like to get reccomendations based off of?\n\t-And please use an underscore (_) as a space.\n";
         std::cin >> input;
         index = get_show(input, titles);
         recomendations = matrix.make_recs(index);
