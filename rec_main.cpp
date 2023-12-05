@@ -4,11 +4,7 @@
 #include <fstream>
 #include <chrono>
 
-
-
-
-//Make recomendation fucntion work for regular matracies.
-
+//string to lowercase
 std::string to_lower(std::string str){
     std::string newstr;
     for(char let: str){
@@ -16,7 +12,7 @@ std::string to_lower(std::string str){
     }
     return newstr;
 }
-
+//get index of a given title
 int get_index(std::vector<std::string> labels, std::string to_find){
     for(int i=0; i<labels.size(); i++){
         if(to_lower(labels[i]) == to_lower(to_find)){
@@ -25,7 +21,7 @@ int get_index(std::vector<std::string> labels, std::string to_find){
     }
     return -1;
 }
-
+//getting show loop turned into function
 int get_show(std::string input, std::vector<std::string> titles){
     int mistakeCounter = 0;
     int index = get_index(titles, input);
@@ -72,6 +68,7 @@ int main(int argc, char** argv){
     int row = 0;
     int col = 0;
     bool first = true;
+    //reading into a Sparse Matrix
     if(mode != 5){
         while(std::getline(ifs, line)){
             std::stringstream ss(line);
@@ -98,6 +95,7 @@ int main(int argc, char** argv){
             }
         }
     }
+    //Reading into vector matrix
     else{
         while(std::getline(ifs, line)){
             std::stringstream ss(line);
@@ -126,6 +124,7 @@ int main(int argc, char** argv){
         }
     }
     ifs.close();
+    //Variable declaration before switch statement
     std::string type = "dense";
     if(mode == 4){
         type = "sparse";
@@ -138,6 +137,7 @@ int main(int argc, char** argv){
     std::string outfname_matrix = "output_dense.csv";
     std::string outfname = "output_sparse.csv";
     auto start = std::chrono::high_resolution_clock::now();
+    //Cases 1: Print 2: Find Highest/Lowest 3: Get Recs based on show 4: Sparse to CSV 5: Dense to CSV
     switch (mode){
     case 1:
         for(std::string title: titles){
@@ -169,6 +169,7 @@ int main(int argc, char** argv){
     default:
         break;
     }
+    //timing from chrono library for testing
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
     if(mode > 3){

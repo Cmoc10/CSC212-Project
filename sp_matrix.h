@@ -34,7 +34,9 @@ class SpMatrix{
     int columns;
     Node* head;
     void insert(int data, int row, int col, Node* node);
+    //if 2 nodes try to get inserted to same places push old one over one
     void push(Node* node);
+    //recursive
     void remove(int data, Node* node);
     //resize function for rows/cols
     void auto_resize(int new_num, bool type);
@@ -43,6 +45,7 @@ class SpMatrix{
     SpMatrix();
     SpMatrix(int row, int col);
     SpMatrix(int row, int col, Node* head);
+    //insertion given data and a target row & column
     void insert(int data, int row, int col);
     void remove(int data);
     //Adds two sparse matracies together
@@ -58,6 +61,7 @@ class SpMatrix{
     topThree lowest();
     //Make recomendations for a show based off input from the user
     topThree make_recs(int col);
+    //writes matrix to .csv file
     void to_csv(std::string fname);
     void to_csv_matrix(std::string fname, std::vector<std::vector<int>> matrix);
     //prints out the sparse matrix

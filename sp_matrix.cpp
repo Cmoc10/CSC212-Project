@@ -203,7 +203,7 @@ void SpMatrix::push(Node* node){
     }
 }
 
-//Adds two sparce matracies together
+//Adds two sparce matrices together
 SpMatrix SpMatrix::add(SpMatrix& matrix2){
     SpMatrix result(rows, columns);
 
@@ -271,10 +271,12 @@ SpMatrix SpMatrix::add(SpMatrix& matrix2){
 void SpMatrix::print(){
     std::cout << "Rows: " << rows << "\n" << "Columns: " << columns << "\n";
     Node* temp = head;
+    float counter_print = 0;
     for(int i=0; i<rows; i++){
         for(int j=0; j<columns; j++){
             if(i == temp->row && j == temp->column){
                 std::cout << temp->data << " ";
+                counter_print++;
                 if(temp->next != nullptr){
                     temp = temp->next;
                 }
@@ -285,9 +287,11 @@ void SpMatrix::print(){
         }
         std::cout << "\n";
     }
+    float sparsity =  (1 - (counter_print/(rows*columns)));
+    std::cout << "Sparsity: " << sparsity << "\n";
 }
 
-
+//writes to csv file
 void SpMatrix::to_csv(std::string fname){
     std::ofstream outf(fname);
     Node* temp = head;
@@ -308,6 +312,7 @@ void SpMatrix::to_csv(std::string fname){
     outf.close();
 }
 
+//writes from vector to .csv
 void SpMatrix::to_csv_matrix(std::string fname, std::vector<std::vector<int>> matrix){
     std::ofstream outf(fname);
     for(int i=0; i<matrix.size(); i++){
