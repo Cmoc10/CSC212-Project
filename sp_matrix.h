@@ -54,11 +54,11 @@ class SpMatrix{
     //multiplies two sparse matracies
     SpMatrix multiply(SpMatrix& matrix2);
     //Outputs the top three highest Averges
-    topThree highest();
+    topThree highest_average();
     //Outputs the top three averages with respect to a specifc column
-    topThree highest(int col);
+    topThree highest_average(int col);
     //outputs the lowest average
-    topThree lowest();
+    topThree lowest_average();
     //Make recomendations for a show based off input from the user
     topThree make_recs(int col);
     //writes matrix to .csv file

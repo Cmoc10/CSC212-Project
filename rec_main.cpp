@@ -147,8 +147,8 @@ int main(int argc, char** argv){
         matrix.print();
         break;
     case 2:
-        results = matrix.highest();
-        results2 = matrix.lowest();
+        results = matrix.highest_average();
+        results2 = matrix.lowest_average();
         std::cout << "The highest rated show is: " << titles[results.first] << " with a rating of " << std::fixed << std::setprecision(2) << results.highestscore << "\n";
         std::cout << "The lowest rated show is: " << titles[results2.first] << " with a rating of " << std::fixed << std::setprecision(2) << results2.lowestscore << "\n";
         break;

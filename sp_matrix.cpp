@@ -391,7 +391,7 @@ SpMatrix SpMatrix::multiply(SpMatrix& matrix2){
 }
 
 //Outputs the top three highest Averges
-topThree SpMatrix::highest(){
+topThree SpMatrix::highest_average(){
     topThree result;
     SpMatrix tempMatrix;
     Node* temp = head;
@@ -440,7 +440,7 @@ topThree SpMatrix::highest(){
 }
 
 //Outputs the top three averages with respect to a specifc column
-topThree SpMatrix::highest(int col){
+topThree SpMatrix::highest_average(int col){
     topThree result;
     SpMatrix tempMatrix;
     Node* temp = head;
@@ -495,7 +495,7 @@ topThree SpMatrix::highest(int col){
 }
 
 //outputs the lowest average
-topThree SpMatrix::lowest(){
+topThree SpMatrix::lowest_average(){
     topThree result;
     SpMatrix tempMatrix;
     Node* temp = head;
@@ -585,7 +585,7 @@ topThree SpMatrix::make_recs(int col){
     }
 
     //newGoodRating.print();
-    result = newGoodRating.highest(col);
+    result = newGoodRating.highest_average(col);
     return result;
 
 }
